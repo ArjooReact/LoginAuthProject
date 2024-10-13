@@ -20,7 +20,7 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView>
-     <Text>Welcome to App.tsx hh2</Text>
+     <Text>Welcome to App.tsx hh2 testing 3</Text>
     </SafeAreaView>
   );
 }

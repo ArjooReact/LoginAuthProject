@@ -6,22 +6,24 @@
  */
 
 import React from 'react';
+import StackNavigator from './src/navigators/StackNavigator/StackNavigator';
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   useColorScheme,
 } from 'react-native';
-
+import { Provider } from 'react-redux';
+import store from './src/synchRedux/store/store';
 
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaView>
-     <Text>Welcome to App.tsx hh2 testing 3</Text>
-    </SafeAreaView>
+    <Provider store={store}>
+    <StackNavigator></StackNavigator>
+    </Provider>
   );
 }
 

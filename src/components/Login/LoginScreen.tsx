@@ -6,9 +6,11 @@ import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation
 import { SafeAreaView,StyleSheet,Text,Button,TextInput, View,Alert } from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
 import { savePassword,saveUserName } from '../../synchRedux/slices/loginSlice';
-
+import axiosInstance from '../../api/AxiosInstance';
+import { saveDataInLocalStorage } from '../../storage/AsyncStorage/AsyncStorage';
 const LoginScreen:React.FC<LoginScreenTypes>=()=>{
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    const [data,setData]=useState<any>()
     const navigation: NavigationProp<ParamListBase> = useNavigation();
   
     
@@ -26,8 +28,25 @@ const LoginScreen:React.FC<LoginScreenTypes>=()=>{
        return state.loginReducer.passWord
     })
 
+    const getLogin=async ()=>{
+      let response=await axiosInstance.post('/login',{
+        username: 'emilys',
+        password: 'emilyspass',
+        expiresInMins: 30,
+      }).catch((error)=>{
+        console.log('ERROR::::::',error)
+      })
+      let accessToken=JSON.parse(JSON.stringify(response)).data.accessToken
+      let refreshToken=JSON.parse(JSON.stringify(response)).data.refreshToken
+      //let acc=JSON.parse(response).accessToken
+      //console.log('raarrrrr',acc)
+      console.log('SAVE ACCESS....',accessToken)
+      console.log('SAVE REFRESH TOKEN....',refreshToken)
+      saveDataInLocalStorage('ACCESS_TOKEN',accessToken)
+      saveDataInLocalStorage('REFRESH_TOKEN',refreshToken)
+      console.log('LOGIN_RESPONSE::::',JSON.parse(JSON.stringify(response)).data.accessToken)
+    }
   
-
     const doValidation=()=>{
         if(userName===''){
           Alert.alert('Please Enter UserName!!')
@@ -42,7 +61,7 @@ const LoginScreen:React.FC<LoginScreenTypes>=()=>{
        }
     }
     return(<SafeAreaView style={style.mainContainer}>
-        <Text>Hi</Text>
+        <Text>{data}</Text>
    <TextInput
    style={style.inputStyles}
    value={userName}
@@ -85,6 +104,8 @@ const LoginScreen:React.FC<LoginScreenTypes>=()=>{
    // navigation.navigate('DashBoard')
    // setUseName('Rajveerdddd')
     doValidation()
+    getLogin()
+    //getUserDetails()
     //console.log('Checkbox Value:::::',toggleCheckBox)
 
     }}

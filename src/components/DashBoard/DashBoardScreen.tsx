@@ -5,6 +5,7 @@ import { DashBoardScreenTypes } from "./DashBoardScreenTypes";
 const DashBoardScreen:React.FC<DashBoardScreenTypes>=({title})=>{
 return(<SafeAreaView>
     <Text>{title}</Text>
+    <Text></Text>
     </SafeAreaView>)
 }
 

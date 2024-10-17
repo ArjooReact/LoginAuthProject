@@ -21,9 +21,9 @@ function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <Provider store={store}>
+   
     <StackNavigator></StackNavigator>
-    </Provider>
+   
   );
 }
 

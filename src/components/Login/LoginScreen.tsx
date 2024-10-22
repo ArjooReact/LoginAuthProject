@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 
 import { LoginScreenTypes } from './LoginScreenTypes';
@@ -6,16 +6,27 @@ import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation
 import { SafeAreaView,StyleSheet,Text,Button,TextInput, View,Alert } from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
 import { savePassword,saveUserName } from '../../synchRedux/slices/loginSlice';
+import { useGetLogeedInMutation } from '../../rtk/api/loginApi';
+import { useGetSignInMutation } from '../../rtk/api/loginApi2';
+import { saveDataInLocalStorage } from '../../storage/AsyncStorage';
 
 const LoginScreen:React.FC<LoginScreenTypes>=()=>{
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    const[token,setToken]=useState<any>()
     const navigation: NavigationProp<ParamListBase> = useNavigation();
-  
+   //const [createUser1] = useGetSignInMutation()
     
+    const [
+      getTopTestItems,
+      {
+          isLoading,
+          data,
+      }
+  ] = useGetSignInMutation();
     const dispatch=useDispatch()
 
     const selector= useSelector((state)=>{
-        console.log('Arzoo test state',state)
+       // console.log('Arzoo test state',state)
     })
 
     let userName=useSelector((state:any)=>{
@@ -25,8 +36,34 @@ const LoginScreen:React.FC<LoginScreenTypes>=()=>{
     let passWord= useSelector((state:any)=>{
        return state.loginReducer.passWord
     })
+useEffect(()=>{
 
-  
+},[token])
+  const doLogin=()=>{
+    const testParams = {
+      "username": 'emilys',
+      "password": 'emilyspass',
+      "expiresInMins": 30, 
+     };
+    getTopTestItems(testParams).unwrap().then((response:any)=>{
+           console.log('LOGGEDD INNNN........',response)
+           let refreshToken = JSON.parse(JSON.stringify(response))
+           .refreshToken;
+         let accessToken = JSON.parse(JSON.stringify(response))
+           .accessToken;
+         //console.log('REFRESH_TOKEN.....', refreshToken);
+         console.log('ACCESS TOKEN.bbjjh.....', accessToken);
+         saveDataInLocalStorage('REFRESH_TOKEN',refreshToken)
+         saveDataInLocalStorage('ACCESS_TOKEN',accessToken)
+         setToken(token)
+         }).catch((error)=>{
+            console.log('ERRORdddiiiii:::::',error)
+         })
+
+
+    console.log('clicked....')
+   
+  }
 
     const doValidation=()=>{
         if(userName===''){
@@ -38,11 +75,12 @@ const LoginScreen:React.FC<LoginScreenTypes>=()=>{
        else{
         //setUser({ userName: userName, passWord: passWord });
        // console.log('UserName:::',user?.userName)
+       doLogin()
         navigation.navigate('DashBoard')
        }
     }
     return(<SafeAreaView style={style.mainContainer}>
-        <Text>Hi</Text>
+        <Text>{}</Text>
    <TextInput
    style={style.inputStyles}
    value={userName}
@@ -81,12 +119,7 @@ const LoginScreen:React.FC<LoginScreenTypes>=()=>{
     <Button
     title='LOGIN'
     onPress={()=>{
-    // 
-   // navigation.navigate('DashBoard')
-   // setUseName('Rajveerdddd')
-    doValidation()
-    //console.log('Checkbox Value:::::',toggleCheckBox)
-
+   doValidation()
     }}
     ></Button>
     </SafeAreaView>)

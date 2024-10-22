@@ -15,13 +15,14 @@ import {
 } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/synchRedux/store/store';
+import { store1 } from './src/redux/store/Store';
 
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <Provider store={store}>
+    <Provider store={store1}>
     <StackNavigator></StackNavigator>
     </Provider>
   );

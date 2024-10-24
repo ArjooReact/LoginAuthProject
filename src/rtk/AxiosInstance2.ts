@@ -1,32 +1,38 @@
-// import axios from "axios";
-// import { BaseQueryFn } from "@reduxjs/toolkit/query";
-// const axiosInstance = axios.create({
-//     baseURL: 'https://dummyjson.com/auth/',
-// });
-
-// export  const axiosBaseQuery = (): BaseQueryFn<any> => async (
-//     requestOptions,
-// ) => {
-//     try {
-
-//         const result = await axiosInstance({
-//             ...requestOptions,
-//         });
-    
-//         return { data: result.data };
-//     } catch (e: any) {
-//         return { error: e?.message }
-//     }
-// }
-
-// export default axiosBaseQuery
-
 
 /////// TRYING 2 ////////
 
 import axios from "axios";
  import { BaseQueryFn } from "@reduxjs/toolkit/query";
  import { AxiosRequestConfig,AxiosError } from "axios";
+ import { useGetRefreshTokenMutation } from "./api/loginApi2";
+ import { getDataFromLocalStorage,saveDataInLocalStorage } from "../storage/AsyncStorage"; 
+ 
+ export const refreshTokenCall=async()=>{
+  let refreshToken:any= await getDataFromLocalStorage('REFRESH_TOKEN')
+   let ref=refreshToken.replaceAll('"','')
+   console.log('ooooooooo..ref',ref)
+   let newTokens:any
+   if(ref){
+   newTokens=await axios.post('https://dummyjson.com/auth/refresh',{
+      refreshToken:ref,
+      expiresInMins: 1
+    }).catch((error)=>{
+      //console.error('hhhhh..',error.response)
+    console.log('Errorssss inside...',error.response.message)
+  })
+  console.log('REEENNAAAAAA',newTokens)
+  let refreshToken = JSON.parse(JSON.stringify(newTokens)).data
+  .refreshToken;
+let accessToken = JSON.parse(JSON.stringify(newTokens)).data
+  .accessToken;
+//console.log('REFRESH_TOKEN.....', refreshToken);
+console.log('ACCESS TOKEN.FOR NEWWWW.....', accessToken);
+//clearAsyncStorage()
+saveDataInLocalStorage('REFRESH_TOKEN',refreshToken)
+saveDataInLocalStorage('ACCESS_TOKEN',accessToken)
+}
+return newTokens
+}
 const axiosInstance=axios.create({
     baseURL: 'https://dummyjson.com/auth/'
 })
@@ -72,7 +78,11 @@ axios.interceptors.response.use(
    return response;
  },
  (error) => {
-  console.log('Response ERRRRRRRRRRRRRRR',error)
+  console.log('Response ERRRRRRRRRRRRRRR',error.response.status)
+  if(error.response.status=401){
+    console.log('Calling..refresh token api.api......')
+    refreshTokenCall()
+  }
    return Promise.reject(error);
  }
 );

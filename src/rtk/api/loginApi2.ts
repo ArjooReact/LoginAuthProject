@@ -1,5 +1,6 @@
 import { fetchBaseQuery,createApi} from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "../AxiosInstance2";
+import { getDataFromLocalStorage } from "../../storage/AsyncStorage";
 import getInterceptor from "./Interceptor";
 // export const testApi = createApi({
 //     reducerPath: 'testApi',
@@ -18,10 +19,10 @@ import getInterceptor from "./Interceptor";
 
 // export const {useGetLogeedInMutation}=testApi
 
-export const headers1={
-           'Content-Type': 'application/json',
-           'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJlbWlseXMiLCJlbWFpbCI6ImVtaWx5LmpvaG5zb25AeC5kdW1teWpzb24uY29tIiwiZmlyc3ROYW1lIjoiRW1pbHkiLCJsYXN0TmFtZSI6IkpvaG5zb24iLCJnZW5kZXIiOiJmZW1hbGUiLCJpbWFnZSI6Imh0dHBzOi8vZHVtbXlqc29uLmNvbS9pY29uL2VtaWx5cy8xMjgiLCJpYXQiOjE3Mjk0OTkyNzIsImV4cCI6MTcyOTUwMTA3Mn0.LvGMExzMo_hlIll2c_Jy7HGlr8sje16m2Rpot18sJF`
-       }
+// export const headers1={
+//            'Content-Type': 'application/json',
+//            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJlbWlseXMiLCJlbWFpbCI6ImVtaWx5LmpvaG5zb25AeC5kdW1teWpzb24uY29tIiwiZmlyc3ROYW1lIjoiRW1pbHkiLCJsYXN0TmFtZSI6IkpvaG5zb24iLCJnZW5kZXIiOiJmZW1hbGUiLCJpbWFnZSI6Imh0dHBzOi8vZHVtbXlqc29uLmNvbS9pY29uL2VtaWx5cy8xMjgiLCJpYXQiOjE3Mjk0OTkyNzIsImV4cCI6MTcyOTUwMTA3Mn0.LvGMExzMo_hlIll2c_Jy7HGlr8sje16m2Rpot18sJF`
+//        }
 
 export const  signInApi = createApi({
     reducerPath: 'signInApi',
@@ -34,23 +35,36 @@ export const  signInApi = createApi({
           query: (headers1:any) => ({
               url:'/me',
               method:'get',
+              // headers:{
+              //   'Content-Type': 'application/json',
+              //    'Authorization': `Bearer ${headers1}`
+        
+              // }
               prepareHeaders: (headers:any) => {
+                console.log('INSIDE HEADERS.....',headers)
                 console.log('fffffffff.....',headers1)
-        headers.set("Content-Type", 'application/json')
+              headers.set("Content-Type", 'application/json')
       //  'Authorization': `Bearer ${token}`
-        headers.set("Authorization",`Bearer ${headers1}`)
+           headers.set("Authorization",`Bearer ${headers1}`)
           return headers
       },
               //prepare
              // headers:headers
           })
         }),
+      
       //  getUserDetails: build.query({ (query:any) => ({ url: '/query' }) }),
         getSignIn: build.mutation({ query: (data:any) => ({ url: '/login', method: 'post',data:data }),
        // transformResponse: (response: { data: any }) => response.data
            }),
+
+           getRefreshToken: build.mutation({ query: (data:any) => ({ url: '/refresh', method: 'post',data:data }),
+          
+           // transformResponse: (response: { data: any }) => response.data
+               }),
       };
     },
   });
 
-  export const {useGetSignInMutation,useGetUserDetailsQuery}=signInApi
+  export const {useGetSignInMutation,useGetUserDetailsQuery,useGetRefreshTokenMutation}=signInApi
+  //export const {useGetSignInMutation,useLazyGetUserDetailsQuery}=signInApi

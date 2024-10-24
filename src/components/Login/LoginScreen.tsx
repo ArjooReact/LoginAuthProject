@@ -8,14 +8,15 @@ import CheckBox from '@react-native-community/checkbox';
 import { savePassword,saveUserName } from '../../synchRedux/slices/loginSlice';
 import { useGetLogeedInMutation } from '../../rtk/api/loginApi';
 import { useGetSignInMutation } from '../../rtk/api/loginApi2';
+import { AuthUser } from '../../storage/ContextproviderStorage/userContext/UserDataContext';
 import { saveDataInLocalStorage } from '../../storage/AsyncStorage';
-
+import { useUserDataContext } from '../../storage/ContextproviderStorage/contextHooks/useUserDataContext';
 const LoginScreen:React.FC<LoginScreenTypes>=()=>{
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
     const[token,setToken]=useState<any>()
     const navigation: NavigationProp<ParamListBase> = useNavigation();
    //const [createUser1] = useGetSignInMutation()
-    
+   const { user, setUser } = useUserDataContext();
     const [
       getTopTestItems,
       {
@@ -43,19 +44,13 @@ useEffect(()=>{
     const testParams = {
       "username": 'emilys',
       "password": 'emilyspass',
-      "expiresInMins": 30, 
+      "expiresInMins": 1, 
      };
     getTopTestItems(testParams).unwrap().then((response:any)=>{
-           console.log('LOGGEDD INNNN........',response)
-           let refreshToken = JSON.parse(JSON.stringify(response))
-           .refreshToken;
-         let accessToken = JSON.parse(JSON.stringify(response))
-           .accessToken;
-         //console.log('REFRESH_TOKEN.....', refreshToken);
-         console.log('ACCESS TOKEN.bbjjh.....', accessToken);
-         saveDataInLocalStorage('REFRESH_TOKEN',refreshToken)
-         saveDataInLocalStorage('ACCESS_TOKEN',accessToken)
-         setToken(token)
+         console.log('LOGGEDD INNNN........',response)
+         saveUserDataUsingAsyncStorage(response)
+         saveUserDataUsingContextProvider(response)
+         navigation.navigate('DashBoard')
          }).catch((error)=>{
             console.log('ERRORdddiiiii:::::',error)
          })
@@ -64,7 +59,30 @@ useEffect(()=>{
     console.log('clicked....')
    
   }
+ const saveUserDataUsingContextProvider=(response:any)=>{
+  let accessToken = JSON.parse(JSON.stringify(response))
+  .accessToken;
+  let userName = JSON.parse(JSON.stringify(response)).firstName
+  let email = JSON.parse(JSON.stringify(response)).email 
 
+  let userObj:AuthUser={
+    isloggedIn:true,  
+    userName: userName,
+    passWord: email,
+    token:accessToken
+   }
+   setUser(userObj);
+ }
+ const saveUserDataUsingAsyncStorage=(response:any)=>{
+  let accessToken = JSON.parse(JSON.stringify(response))
+  .accessToken;
+  let refreshToken = JSON.parse(JSON.stringify(response))
+           .refreshToken;
+           console.log('ACCESS TOKEN.bbjjh.....', accessToken);
+           saveDataInLocalStorage('REFRESH_TOKEN',refreshToken)
+           saveDataInLocalStorage('ACCESS_TOKEN',accessToken)
+           setToken(token)
+ }
     const doValidation=()=>{
         if(userName===''){
           Alert.alert('Please Enter UserName!!')
@@ -76,7 +94,7 @@ useEffect(()=>{
         //setUser({ userName: userName, passWord: passWord });
        // console.log('UserName:::',user?.userName)
        doLogin()
-        navigation.navigate('DashBoard')
+       
        }
     }
     return(<SafeAreaView style={style.mainContainer}>

@@ -1,0 +1,15 @@
+{
+  "name": "@arzoo-code/custombutton",
+  "version": "1.0.0",
+  "description": "This is our customButton package",
+  "main": "index.js",
+  "peerDependencies": {
+        "react": ">=18.0.0",
+        "react-native": ">=0.69.1"
+    },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

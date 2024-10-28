@@ -1,3 +1,4 @@
 export interface StackNavigatorTypes{
-    title?:string
+    title?:string,
+    isLoggedIn?:boolean
 }

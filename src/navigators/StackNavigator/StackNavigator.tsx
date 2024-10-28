@@ -13,7 +13,7 @@ const StackNavigator:React.FC<StackNavigatorTypes>=({title})=>{
     <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
-          options={{title: 'Login', headerShown:false}}
+          options={{title: 'LoginScreen', headerShown:false}}
         />
 
       <Stack.Screen

@@ -41,7 +41,7 @@ const LoginScreen: React.FC<LoginScreenTypes> = () => {
   const dispatch = useDispatch();
 
   const selector = useSelector(state => {
-    console.log('Arzoo test state', state);
+   // console.log('Arzoo test state', state);
   });
 
   const [
@@ -191,6 +191,7 @@ const LoginScreen: React.FC<LoginScreenTypes> = () => {
          
         // doValidation();
          doLogin()
+        // navigation.navigate('DashBoard');
         
         }}></Button>
       </View>)}

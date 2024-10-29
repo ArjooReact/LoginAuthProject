@@ -7,6 +7,9 @@ export type ProductResponse={
     products:Array<ProductListType>
 }
 
+export type ProductList={
+    products:Array<ProductListType>
+}
 export type ProductListType={
     availabilityStatus:string,
     brand:string,

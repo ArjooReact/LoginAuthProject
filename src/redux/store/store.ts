@@ -7,19 +7,26 @@ import {persistStore} from 'redux-persist';
 import {signInApi} from '../../rtk/api/LoginApi';
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { productLisrApi } from '../../rtk/api/ProductApi';
+import productListReducer from '../synchRedux/slices/cartSlice'
 export const rootReducer = combineReducers({
   [signInApi.reducerPath]: signInApi.reducer,
   [productLisrApi.reducerPath]: productLisrApi.reducer,
   loginReducer: loginReducers,
+  productListReducer:productListReducer
 });
 
 export const store1 = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
-        serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },
+        immutableCheck: { warnAfter: 128 },
+        //serializableCheck: { warnAfter: 128 },
+        serializableCheck: false
+        // serializableCheck: {
+        //   warnAfter: 128 ,
+        //   ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        // },
+        
       }).concat(signInApi.middleware).concat(productLisrApi.middleware),
     
   

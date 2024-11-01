@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native'
 import { StackNavigatorTypes } from './StackNavigatorType'
 import DashBoardScreen from '../../components/DashBoard/DashBoardScreen'
 import LoginScreen from '../../components/Login/LoginScreen'
+import ProfileScreen from '../../components/ProfileScreen/ProfileScreen'
 const StackNavigator:React.FC<StackNavigatorTypes>=({title})=>{
     const Stack=createNativeStackNavigator()
     return <NavigationContainer>
@@ -20,6 +21,11 @@ const StackNavigator:React.FC<StackNavigatorTypes>=({title})=>{
           name="DashBoard"
           component={DashBoardScreen}
           options={{title: 'DashBoard'}}
+        />
+         <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{title: 'ProfileScreen'}}
         />
 
     </Stack.Navigator>

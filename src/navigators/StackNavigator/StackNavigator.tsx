@@ -5,10 +5,18 @@ import { SafeAreaView } from 'react-native'
 import { StackNavigatorTypes } from './StackNavigatorType'
 import DashBoardScreen from '../../components/DashBoard/DashBoardScreen'
 import LoginScreen from '../../components/Login/LoginScreen'
+import LoginPage from '../../components/TestFolder/LoginPage'
 const StackNavigator:React.FC<StackNavigatorTypes>=({title})=>{
     const Stack=createNativeStackNavigator()
     return <NavigationContainer>
     <Stack.Navigator>
+
+    <Stack.Screen
+          name="LoginPage"
+          component={LoginPage}
+          options={{title: 'LoginPage', headerShown:false}}
+        />
+
         
     <Stack.Screen
           name="LoginScreen"

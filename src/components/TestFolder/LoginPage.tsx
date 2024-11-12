@@ -2,10 +2,12 @@ import React, {useState,useEffect} from 'react';
 import {Text, SafeAreaView, Button} from 'react-native';
 import {LoginScreenTypes} from '../Login/LoginScreenTypes';
 import CustomButton from './CustomButton/CustomButton';
+// import { useGetDataQuery } from '../../api/GetAllApi';
 import axios from 'axios';
 export  const clickHandler=()=>{
   console.log('clicked button....')
   //return a+b
+  //console.log('RTK DATA...',data)
 }
 
 export function sum(a:number,b:number){
@@ -17,6 +19,8 @@ export const doFetch= async ()=>{
 }
 
 const LoginPage: React.FC<LoginScreenTypes> = ({title}) => {
+//  const {data}=useGetDataQuery('')
+ // console.log('RTK DATAooooo...',data)
   const [titleTxt, setTitleTxt] = useState('');
   useEffect(()=>{
     doFetch()

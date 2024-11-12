@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 
 import { LoginScreenTypes } from './LoginScreenTypes';
@@ -6,18 +6,22 @@ import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation
 import { SafeAreaView,StyleSheet,Text,Button,TextInput, View,Alert } from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
 import { savePassword,saveUserName } from '../../synchRedux/slices/loginSlice';
+//import { useGetDataQuery } from '../../api/GetAllApi';
 
 const LoginScreen:React.FC<LoginScreenTypes>=()=>{
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
     const navigation: NavigationProp<ParamListBase> = useNavigation();
-  
-    
+   // const {data}=useGetDataQuery('')
+    //console.log('RTK DATA...',data)
     const dispatch=useDispatch()
 
     const selector= useSelector((state)=>{
         console.log('Arzoo test state',state)
     })
-
+   useEffect(()=>{
+    console.log('useEffect() is calling...')
+    //console.log('RTK DATA...',data)
+   },[])
     let userName=useSelector((state:any)=>{
        return state.loginReducer.userName
     })
@@ -84,11 +88,14 @@ const LoginScreen:React.FC<LoginScreenTypes>=()=>{
     // 
    // navigation.navigate('DashBoard')
    // setUseName('Rajveerdddd')
+  
     doValidation()
-    //console.log('Checkbox Value:::::',toggleCheckBox)
+   
 
     }}
     ></Button>
+     <Text>Hnnnni</Text>
+     {/* <Text>{JSON.stringify(data)}</Text> */}
     </SafeAreaView>)
 }
 

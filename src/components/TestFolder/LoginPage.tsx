@@ -2,13 +2,10 @@ import React, {useState,useEffect} from 'react';
 import {Text, SafeAreaView, Button} from 'react-native';
 import {LoginScreenTypes} from '../Login/LoginScreenTypes';
 import CustomButton from './CustomButton/CustomButton';
+import { useAddNewPostMutation } from '../../api/GetAllApi';
 // import { useGetDataQuery } from '../../api/GetAllApi';
 import axios from 'axios';
-export  const clickHandler=()=>{
-  console.log('clicked button....')
-  //return a+b
-  //console.log('RTK DATA...',data)
-}
+
 
 export function sum(a:number,b:number){
   return a+b
@@ -22,9 +19,30 @@ const LoginPage: React.FC<LoginScreenTypes> = ({title}) => {
 //  const {data}=useGetDataQuery('')
  // console.log('RTK DATAooooo...',data)
   const [titleTxt, setTitleTxt] = useState('');
+  const[createProduct] = useAddNewPostMutation()
   useEffect(()=>{
     doFetch()
   },[])
+    const clickHandler=()=>{
+    console.log('clicked button aaa....')
+    //return a+b
+    //console.log('RTK DATA...',data)
+    addProducts
+  }
+  const addProducts=()=>{
+    console.log('calling add products')
+    const dataParams=   {
+      title: 'test product',
+      price: 13.5,
+      description: 'lorem ipsum set',
+      image: 'https://i.pravatar.cc',
+      category: 'electronic'
+  }
+    createProduct(dataParams).unwrap().then((response)=>{
+      console.log('LOGIN_RESPONSEcccc:::::::',response)
+    })
+  
+  }
   return (
     <SafeAreaView>
       <Text>{titleTxt}</Text>
@@ -37,7 +55,7 @@ const LoginPage: React.FC<LoginScreenTypes> = ({title}) => {
         }}></Button>
         <CustomButton
         title='Submit'
-        onClickHandler={clickHandler}
+        onClickHandler={addProducts}
         ></CustomButton>
     </SafeAreaView>
   );

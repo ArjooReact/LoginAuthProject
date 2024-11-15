@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from "react";
 import CustomButton from "../../../packages/atoms/Button/src";
 import { getCredentialsUsingKeychain } from "../../../storage/KeyChainStorage/KeyChain";
-import { getDataFromLocalStorage,saveDataInLocalStorage ,clearAsyncStorage} from "../../../storage/AsyncStorage/AsyncStorage";
+import { getDataFromLocalStorage,saveDataInLocalStorage ,clearAsyncStorage,clearUserSpecificData} from "../../../storage/AsyncStorage/AsyncStorage";
 import { useUserDataContext } from "../../../storage/ContextProviderStorage/ContextHooks/useUserDataContext";
 import { StyleSheet,SafeAreaView,Text } from "react-native";
 import { useGetProductListingQuery } from "../../../rtk/api/ProductApi";
+import { useFocusEffect } from '@react-navigation/native';
 import {
    useNavigation,
    ParamListBase,
@@ -21,18 +22,40 @@ const Home:React.FC<HomeType>=()=>{
     const {user, setUser} = useUserDataContext();
     let click:any=()=>{
      console.log('clicked')
-     saveDataInLocalStorage('IS_LOGGED_IN',false)
+     
      clearAsyncStorage()
+     clearUserSpecificData('ACCESS_TOKEN')
+     saveDataInLocalStorage('IS_LOGGED_IN',false)
      navigation.navigate('LoginScreen')
     }
+
+    useFocusEffect(
+      React.useCallback(() => {
+        //Do something when the screen is focused
+       getAllTokens()
+       if (token) {
+         console.log('INSIDE CRED token..fffffffffff.....',token)
+         setToken(token)
+    }
+        return () => {
+           // Do something when the screen is unfocused
+          //Useful for cleanup functions
+        };
+      }, [token]))
     //let cred:any
- useEffect(()=>{
-    getAllTokens()
-    console.log('OUTSIDE CRED.....',cred)
-  if(cred){
-   console.log('INSIDE CRED.......',cred)
-  }
- },[token])
+//  useEffect(()=>{
+//    console.log('useEffect3 calling...')
+//     getAllTokens()
+//     console.log('TOKEN FROM CONTEXT PROVIDER.......',user?.token)
+//     console.log('OUTSIDE CRED..tttttt...',cred)
+//     console.log('INSIDE CRED..fffffffffff.....',token)
+//     if(token){
+//       console.log('INSIDE CRED token..fffffffffff.....',token)
+//     }
+//   if(cred){
+//    console.log('INSIDE CRED.......',cred)
+//   }
+//  },[token])
     const getAllTokens = async () => {
         let accessToken: any = await getDataFromLocalStorage('ACCESS_TOKEN');
         let refreshToken: any = await getDataFromLocalStorage('REFRESH_TOKEN');

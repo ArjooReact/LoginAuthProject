@@ -15,8 +15,9 @@ export const rootReducer = combineReducers({
   productListReducer:productListReducer
 });
 
-export const store1 = configureStore({
+export const store1:any = configureStore({
     reducer: persistedReducer,
+  // reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         immutableCheck: { warnAfter: 128 },

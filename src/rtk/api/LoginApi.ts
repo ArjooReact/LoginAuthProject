@@ -33,6 +33,7 @@ export const  signInApi = createApi({
       return {
         getUserDetails: build.query({
           query: (headers1:any) => ({
+            
               url:'/me',
               method:'get',
               // headers:{
@@ -43,13 +44,15 @@ export const  signInApi = createApi({
               prepareHeaders: (headers:any) => {
                 console.log('INSIDE HEADERS.....',headers)
                 console.log('fffffffff.....',headers1)
-              headers.set("Content-Type", 'application/json')
-      //  'Authorization': `Bearer ${token}`
+                headers.set("Content-Type", 'application/json')
+       // 'Authorization': `Bearer ${token}`
            headers.set("Authorization",`Bearer ${headers1}`)
           return headers
-      },
+       },
+    //  data:{}
               //prepare
              // headers:headers
+             
           })
         }),
       

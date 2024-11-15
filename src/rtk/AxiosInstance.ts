@@ -5,6 +5,7 @@ import axios from "axios";
  import { BaseQueryFn } from "@reduxjs/toolkit/query";
  import { AxiosRequestConfig,AxiosError } from "axios";
  import { useGetRefreshTokenMutation } from "./api/LoginApi";
+ import { useUserDataContext } from "../storage/ContextProviderStorage/ContextHooks/useUserDataContext";
  import { getDataFromLocalStorage,saveDataInLocalStorage } from "../storage/AsyncStorage/AsyncStorage"; 
  
  export const refreshTokenCall=async()=>{
@@ -36,6 +37,10 @@ return newTokens
 const axiosInstance=axios.create({
     baseURL: 'https://dummyjson.com/auth/'
 })
+let token=async()=>{
+  let refreshToken: any = await getDataFromLocalStorage('REFRESH_TOKEN');
+  return refreshToken
+}
 const axiosBaseQuery = (
     { baseUrl }: { baseUrl: string } = { baseUrl: '' }
   ): BaseQueryFn<
@@ -60,10 +65,9 @@ const axiosBaseQuery = (
   //Add a request interceptor
   axios.interceptors.request.use(
  (config) => {
-   // You can modify the request config here, e.g., add authentication headers
-   // config.headers.Authorization = `Bearer ${getToken()}`;
-   console.log('MAIN_CONFIGGGGGGGG',config)
-   return config;
+   // You can modify 
+ 
+  return config
  },
  (error) => {
    return Promise.reject(error);
@@ -78,7 +82,7 @@ axios.interceptors.response.use(
    return response;
  },
  (error) => {
-  console.log('Response ERRRRRRRRRRRRRRR',error.response.status)
+  console.log('Response ERRRRRRRRRRRRRRR',error)
   if(error.response.status=401){
     console.log('Calling..refresh token api.api......')
     refreshTokenCall()

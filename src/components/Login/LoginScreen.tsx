@@ -6,7 +6,6 @@ import { UserDataType } from './LoginScreenTypes';
 import style from './LoginScreenStyles';
 import { saveCredentialsUsingKeychain } from '../../storage/KeyChainStorage/KeyChain';
 import validator from '../../utils/Validation'
-import {showMessage} from 'react-native-flash-message';
 import { AuthUser } from '../../storage/ContextProviderStorage/UserContext/UserDataContext';
 import { useGetSignInMutation } from '../../rtk/api/LoginApi';
 import { showError,showSuccess } from '../../utils/HelperFunction';
@@ -36,13 +35,13 @@ import CustomTextInputType from '../../packages/atoms/TextInput/src/CustomTextIn
 const LoginScreen: React.FC<LoginScreenTypes> = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const { user, setUser } = useUserDataContext();
+ const { user, setUser } = useUserDataContext();
   const[token,setToken]=useState<any>()
   const dispatch = useDispatch();
 
-  const selector = useSelector(state => {
-   // console.log('Arzoo test state', state);
-  });
+  // const selector = useSelector(state => {
+  //  // console.log('Arzoo test state', state);
+  // });
 
   const [
     getTopTestItems,
@@ -54,7 +53,7 @@ const LoginScreen: React.FC<LoginScreenTypes> = () => {
   let userData:UserDataType = useSelector((state:any) => {
     return state.loginReducer.userData;
   });
-
+console.log('LOGIN DATA..',data)
    let userName=userData.userName
    let passWord=userData.userPassword
 

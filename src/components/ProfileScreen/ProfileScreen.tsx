@@ -39,3 +39,7 @@ const styles= StyleSheet.create({
 })
 //export default WithComponent(ProfileScreen,'https://fakestoreapi.com/products')
 export default WithAuthorization(ProfileScreen,'admin')
+
+// WithAuthorization is a Higher Order Component which takes Component <ProvileScreen/>
+//As a Parameter and returns EnhancedComponent after Modifying OlderComponentt which is
+//Profile Screen

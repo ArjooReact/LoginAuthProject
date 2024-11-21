@@ -51,9 +51,10 @@ const LoginScreen: React.FC<LoginScreenTypes> = () => {
     }
 ] = useGetSignInMutation();
   let userData:UserDataType = useSelector((state:any) => {
+    console.log('useSelector()=>>',state.loginReducer.userData)
     return state.loginReducer.userData;
   });
-console.log('LOGIN DATA..',data)
+   console.log('LOGIN DATA..',data)
    let userName=userData.userName
    let passWord=userData.userPassword
 
@@ -120,7 +121,7 @@ console.log('LOGIN DATA..',data)
    
   }
 
-  function isValidData(userName:string,passWord:string){
+   function isValidData(userName:string,passWord:string){
     console.log('clicked:::')
     const error:any = validator({
       userName,
@@ -159,7 +160,9 @@ console.log('LOGIN DATA..',data)
     <SafeAreaView style={{display:'flex',justifyContent:'center',alignItems:'center',flex:1,width:'100%'}}>
       {isLoading?(<ActivityIndicator></ActivityIndicator>):(<View style={style.mainContainer}>
         <Text>Hi</Text>
-
+      <Text
+      testID='arzooText'
+      >{userName}</Text>
       <CustomTextInputType
         value={userData.userName}
         placeholder="Please Enter UserName"

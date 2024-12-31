@@ -17,6 +17,10 @@ const loginSlice=createSlice({
     }
 })
 
- const{reducer,actions}=loginSlice
- export const {saveUserName,savePassword}=actions
- export default reducer
+//  const{reducer,actions}=loginSlice
+//  export const {saveUserName,savePassword}=actions
+//  export default reducer
+
+
+export const { saveUserName, savePassword } = loginSlice.actions;
+export default loginSlice.reducer;

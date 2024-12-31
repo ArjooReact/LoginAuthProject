@@ -16,7 +16,8 @@ import {
 import { Provider } from 'react-redux';
 import store from './src/synchRedux/store/store';
 
-
+/// First Render Page LoginPage.tsx
+//src/components/TestFolder/LoginPage.tsx
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
